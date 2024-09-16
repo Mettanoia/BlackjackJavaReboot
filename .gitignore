@@ -123,3 +123,4 @@ gradle-app.setting
 /src/test/
 /gradle/wrapper/gradle-wrapper.properties
 /gradle/wrapper/gradle-wrapper.jar
+/src/main/resources/schema.sql
