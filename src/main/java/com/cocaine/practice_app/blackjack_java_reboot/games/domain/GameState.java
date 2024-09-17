@@ -3,17 +3,21 @@ package com.cocaine.practice_app.blackjack_java_reboot.games.domain;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.Deque;
 
-
+/**
+ * A class representing the state of  the game.<br /><br />
+ *
+ * This class has all members as mutable since it represents the constantly changing state
+ * of the game.
+ *
+ */
 @Getter
 @RequiredArgsConstructor
 final class GameState {
 
-    private final Stack<Card> deck;
-    private final List<Player> players;
-    private final Collection<Card> dealersHand;
+    private final Deque<Card> deck;
+    private final ArrayList<Player> players;
 
 }
