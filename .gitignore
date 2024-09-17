@@ -120,7 +120,7 @@ gradle-app.setting
 /gradlew
 /gradlew.bat
 /HELP.md
-/src/test/
 /gradle/wrapper/gradle-wrapper.properties
 /gradle/wrapper/gradle-wrapper.jar
 /src/main/resources/schema.sql
+/src/test/java/com/cocaine/practice_app/blackjack_java_reboot/BlackjackJavaRebootApplicationTests.java
