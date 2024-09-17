@@ -124,3 +124,5 @@ gradle-app.setting
 /gradle/wrapper/gradle-wrapper.jar
 /src/main/resources/schema.sql
 /src/test/java/com/cocaine/practice_app/blackjack_java_reboot/BlackjackJavaRebootApplicationTests.java
+/src/main/resources/default.mv.db
+/src/main/resources/default.trace.db
