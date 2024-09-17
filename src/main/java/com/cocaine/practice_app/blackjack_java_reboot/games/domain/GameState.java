@@ -15,9 +15,10 @@ import java.util.Deque;
  */
 @Getter
 @RequiredArgsConstructor
-final class GameState {
+public final class GameState {
 
     private final Deque<Card> deck;
     private final ArrayList<Player> players;
+    private ArrayList<Player> winners = new ArrayList<>();
 
 }
