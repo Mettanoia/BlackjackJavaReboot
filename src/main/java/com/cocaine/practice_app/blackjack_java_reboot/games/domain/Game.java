@@ -3,21 +3,32 @@ package com.cocaine.practice_app.blackjack_java_reboot.games.domain;
 
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-import java.util.Set;
+import java.util.Collections;
+import java.util.Stack;
+
 
 
 @RequiredArgsConstructor
 final public class Game {
 
-    private final Set<Card> deck;
-    private final List<Player> players;
-    private final Player dealer;
     private final GameState gameState;
 
-
     public void startGame() {
-        // Initialize and shuffle the deck, deal cards to player and dealer
+
+        Stack<Card> deck = gameState.getDeck();
+
+        Collections.shuffle(deck);
+
+        for(Player p : gameState.getPlayers()) {
+
+            Stack<Card> startingHand = new Stack<>();
+            startingHand.push(deck.pop());
+            startingHand.push(deck.pop());
+
+            p.setStartingHand(startingHand);
+
+        }
+
     }
 
     public void playerHit() {
