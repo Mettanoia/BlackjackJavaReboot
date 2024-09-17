@@ -1,9 +1,6 @@
 package com.cocaine.practice_app.blackjack_java_reboot.games.domain;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,10 +8,12 @@ import java.util.Objects;
 
 @Getter
 @AllArgsConstructor
+@RequiredArgsConstructor
 final class Player {
 
     private final String name;
     private final String email;
+    private final Boolean isDealer;
 
     @Setter(AccessLevel.PRIVATE)
     private PlayerState playerState;
@@ -22,19 +21,15 @@ final class Player {
     @Setter(AccessLevel.PRIVATE)
     private Collection<Card> hand;
 
-    Player(String name, String email) {
-
-        this.name = Objects.requireNonNull(name);
-        this.email = Objects.requireNonNull(email);
-        this.hand = new ArrayList<>();
-
+    public Player(String name, String email) {
+        this(name, email, false, PlayerState.PLAYING, new ArrayList<>());
     }
 
     void setStartingHand(Collection<Card> startingHand) {
         if (startingHand == null || startingHand.size() != 2)
             throw new IllegalArgumentException("startingHand must have exactly two cards.");
 
-        setHand(new ArrayList<>(startingHand));
+        setHand(startingHand);
 
         setPlayerState(hasBlackjack() ? PlayerState.BLACKJACK : PlayerState.PLAYING);
 

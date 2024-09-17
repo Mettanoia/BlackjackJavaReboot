@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -45,7 +46,11 @@ class PlayerTest {
     @MethodSource("provideHitCardData")
     void testHit(Card initialCard1, Card initialCard2, Card hitCard, Player.PlayerState expectedState, Class<? extends Exception> expectedException) {
 
-        player.setStartingHand(List.of(initialCard1, initialCard2));
+        Collection<Card> startingHand = new HashSet<>(2);
+
+        startingHand.addAll(List.of(initialCard1, initialCard2));
+
+        player.setStartingHand(startingHand);
 
         if (expectedException != null) {
 
@@ -148,14 +153,29 @@ class PlayerTest {
 
     static Stream<Arguments> provideHandValue() {
 
+        Collection<Card> noAceNoBurstNoThirdCard = new HashSet<>(2);
+        noAceNoBurstNoThirdCard.addAll(List.of(
+                new Card(Card.Rank.NINE, Card.Suit.CLUBS),
+                new Card(Card.Rank.SEVEN, Card.Suit.HEARTS)
+        ));
+
+        Collection<Card> closestToBlackjack = new HashSet<>(2);
+        closestToBlackjack.addAll(List.of(
+                new Card(Card.Rank.ACE, Card.Suit.CLUBS),
+                new Card(Card.Rank.ACE, Card.Suit.HEARTS)
+        ));
+
+        Collection<Card> noBurst = new HashSet<>(2);
+        noBurst.addAll(List.of(
+                new Card(Card.Rank.ACE, Card.Suit.CLUBS),
+                new Card(Card.Rank.NINE, Card.Suit.HEARTS)
+        ));
+
         return Stream.of(
 
                 // Hand doesn't exceed 21, no Ace adjustment needed, no third card
                 Arguments.of(
-                        List.of(
-                                new Card(Card.Rank.NINE, Card.Suit.CLUBS),
-                                new Card(Card.Rank.SEVEN, Card.Suit.HEARTS)
-                        ),
+                        noAceNoBurstNoThirdCard,
                         false, // No third card to be added
                         null,  // Third card is null
                         16     // Total: 9 + 7 = 16
@@ -163,10 +183,7 @@ class PlayerTest {
 
                 // Hand doesn't exceed 21, Ace needs to be adjusted, third card added
                 Arguments.of(
-                        List.of(
-                                new Card(Card.Rank.ACE, Card.Suit.CLUBS),
-                                new Card(Card.Rank.NINE, Card.Suit.HEARTS)
-                        ),
+                        noBurst,
                         true,  // Third card will be added using hit()
                         new Card(Card.Rank.TEN, Card.Suit.SPADES), // Third card added via hit()
                         20     // Total: Ace (1) + 9 + 10 = 20
@@ -174,10 +191,7 @@ class PlayerTest {
 
                 // Two Aces, combination closest to 21
                 Arguments.of(
-                        List.of(
-                                new Card(Card.Rank.ACE, Card.Suit.CLUBS),
-                                new Card(Card.Rank.ACE, Card.Suit.HEARTS)
-                        ),
+                        closestToBlackjack,
                         true,  // Third card will be added using hit()
                         new Card(Card.Rank.NINE, Card.Suit.SPADES), // Third card added via hit()
                         21     // Total: Ace (11) + Ace (1) + 9 = 21
