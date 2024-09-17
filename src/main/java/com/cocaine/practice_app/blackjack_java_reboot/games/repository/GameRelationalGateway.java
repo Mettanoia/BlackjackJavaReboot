@@ -1,4 +1,6 @@
 package com.cocaine.practice_app.blackjack_java_reboot.games.repository;
 
-public interface GameRelationalGateway {
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+
+public interface GameRelationalGateway extends ReactiveCrudRepository<GameEntity, Long> {
 }
