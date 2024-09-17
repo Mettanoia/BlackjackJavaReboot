@@ -1,5 +1,6 @@
 package com.cocaine.practice_app.blackjack_java_reboot.games.endpoints;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -12,7 +13,10 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 import static reactor.core.publisher.Mono.empty;
 
 @Configuration
+@RequiredArgsConstructor
 class GameEndpointsConfig {
+
+    private final GameRepository gameRepository;
 
     @Bean
     public RouterFunction<ServerResponse> gamesEndpoints() {
@@ -23,8 +27,8 @@ class GameEndpointsConfig {
 
     private Mono<ServerResponse> createNewGame(ServerRequest serverRequest) {
 
-        // TODO 1 - Create the new game using the gateway
-        // TODO 2 - Answer the request with the appropriate response body
+        // TODO - Create a new game, the game isn't persisted unless it is finished and hence has a list of winners this
+        // TODO     method only makes it available at an application level so that it can be mutated and persisted.
 
         return empty();
 
