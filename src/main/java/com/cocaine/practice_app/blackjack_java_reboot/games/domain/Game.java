@@ -1,15 +1,22 @@
 package com.cocaine.practice_app.blackjack_java_reboot.games.domain;
 
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.*;
 
-
 @RequiredArgsConstructor
 final public class Game {
 
+    private final Integer id;
+
+    @Getter
     private final GameState gameState;
+
+    public Game(GameState gameState) {
+        this(null, gameState);
+    }
 
     public void startGame() {
         if (gameState == null || gameState.getDeck() == null || gameState.getDeck().size() < (gameState.getPlayers().size() * 2) + 2)
