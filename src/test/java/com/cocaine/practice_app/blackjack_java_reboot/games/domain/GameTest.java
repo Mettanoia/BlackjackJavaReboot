@@ -131,7 +131,7 @@ class GameTest {
 
         }
 
-        players.add(new Player("Dealer", "dealer@777.es", true));
+        players.add(new Player(null,"Dealer", "dealer@777.es", true));
 
         return players;
 
