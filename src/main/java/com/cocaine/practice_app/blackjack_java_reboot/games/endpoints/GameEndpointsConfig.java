@@ -1,5 +1,7 @@
 package com.cocaine.practice_app.blackjack_java_reboot.games.endpoints;
 
+import com.cocaine.practice_app.blackjack_java_reboot.games.domain.Game;
+import com.cocaine.practice_app.blackjack_java_reboot.games.use_cases.NewGameUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,15 +10,17 @@ import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
-import static reactor.core.publisher.Mono.empty;
+import static org.springframework.web.reactive.function.server.ServerResponse.created;
 
 @Configuration
 @RequiredArgsConstructor
 class GameEndpointsConfig {
 
-    private final GameRepository gameRepository;
+    private final NewGameUseCase newGameUseCase;
 
     @Bean
     public RouterFunction<ServerResponse> gamesEndpoints() {
@@ -27,10 +31,9 @@ class GameEndpointsConfig {
 
     private Mono<ServerResponse> createNewGame(ServerRequest serverRequest) {
 
-        // TODO - Create a new game, the game isn't persisted unless it is finished and hence has a list of winners this
-        // TODO     method only makes it available at an application level so that it can be mutated and persisted.
-
-        return empty();
+        return newGameUseCase.exec().flatMap(savedGame ->
+                created(URI.create("/game/" + savedGame.getId()))
+                        .body(savedGame, Game.class));
 
     }
 
