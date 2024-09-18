@@ -2,6 +2,7 @@ package com.cocaine.practice_app.blackjack_java_reboot.games.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @RequiredArgsConstructor
@@ -9,13 +10,9 @@ final class Card {
 
     private final Rank rank;
     private final Suit suit;
-    private final Boolean faceUp;
 
-    Card(Rank rank, Suit suit) {
-        this.rank = rank;
-        this.suit = suit;
-        this.faceUp = false;
-    }
+    @Setter
+    private Boolean faceUp = false;
 
     @RequiredArgsConstructor
     public enum Rank {
