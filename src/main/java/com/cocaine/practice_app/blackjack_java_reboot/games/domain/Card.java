@@ -6,13 +6,20 @@ import lombok.Setter;
 
 @Getter
 @RequiredArgsConstructor
-final class Card {
+public final class Card {
+
+    @Getter
+    private final Integer id;
 
     private final Rank rank;
     private final Suit suit;
 
     @Setter
     private Boolean faceUp = false;
+
+    public Card(Rank rank, Suit suit) {
+        this(null, rank, suit);
+    }
 
     @RequiredArgsConstructor
     public enum Rank {
