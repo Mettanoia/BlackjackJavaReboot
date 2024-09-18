@@ -9,6 +9,7 @@ import java.util.*;
 @RequiredArgsConstructor
 final public class Game {
 
+    @Getter
     private final Integer id;
 
     @Getter
