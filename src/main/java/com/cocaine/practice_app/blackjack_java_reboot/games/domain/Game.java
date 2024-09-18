@@ -26,32 +26,33 @@ final public class Game {
 
         shuffleDeck(deck);
 
-        for(Player p : gameState.getPlayers())
+        for (Player p : gameState.getPlayers())
             dealStartingHandToPlayer(p, deck);
-
-        // Dealer player and its starting hand
-
-        Player dealer = new Player("Dealer", "dealer@777.com", true);
-
-        dealStartingHandToPlayer(dealer, deck);
-
-        gameState.getPlayers().add(dealer);
 
     }
 
     /**
      * Deals two cards from the deck to the player.
-     *
+     * <p>
      * This method <b>MUTATES</b> both, the deck and the player.
      *
-     * @param p a player to deal the two starting cards to
+     * @param p    a player to deal the two starting cards to
      * @param deck the deck to get the crads from
      */
     private static void dealStartingHandToPlayer(Player p, Deque<Card> deck) {
 
         Set<Card> startingHand = new HashSet<>(2);
+
         startingHand.add(deck.pop());
-        startingHand.add(deck.pop());
+
+        if (p.getIsDealer()) {
+            startingHand.add(deck.pop());
+        } else {
+
+            Card card = deck.pop();
+            card.setFaceUp(true);
+            startingHand.add(deck.pop());
+        }
 
         p.setStartingHand(startingHand);
 
@@ -72,26 +73,60 @@ final public class Game {
 
     }
 
-    public void playerHit() {
-        // Deal a card to the player, check if the player busts or has blackjack
-    }
-
-    public void playerStand() {
-        // Transition to the dealer's turn
-    }
-
     public void dealerTurn() {
-        // Dealer hits if hand is less than 17, stands otherwise
+
+        Player dealer = gameState.getPlayers().stream()
+                .filter(Player::getIsDealer)
+                .toList().get(0); // There is only one dealer
+
+        if (dealer.calculateHandValue() < 17) {
+
+            dealer.hit(gameState.getDeck().pop());
+
+        } else
+            dealer.stand();
+
+        finishGame();
+
     }
 
-    public boolean isPlayerBusted() {
-        // Check if player's hand value exceeds 21
-        return false;
+    private void finishGame() {
+
+        gameState.getWinners().clear();
+
+        List<Player> dealers = gameState.getPlayers().stream()
+                .filter(Player::getIsDealer)
+                .toList();
+
+        if (dealers.size() != 1)
+            throw new IllegalStateException("There should be exactly one dealer in the game.");
+
+        Player dealer = dealers.get(0);
+
+        handleWinners(dealer);
+
     }
 
-    public boolean isDealerBusted() {
-        // Check if dealer's hand value exceeds 21
-        return false;
+    private void handleWinners(Player dealer) {
+
+        if (dealer.getPlayerState() == Player.PlayerState.BUSTED) {
+
+            gameState.getPlayers().stream()
+                    .filter(player -> player.getPlayerState() != Player.PlayerState.BUSTED)
+                    .forEach(player -> gameState.getWinners().add(player));
+
+        } else {
+
+            gameState.getPlayers().stream()
+                    .filter(player -> player.calculateHandValue() > dealer.calculateHandValue())
+                    .forEach(player -> gameState.getWinners().add(player));
+
+            gameState.getPlayers().stream()
+                    .filter(player -> player.calculateHandValue() == dealer.calculateHandValue())
+                    .forEach(player -> gameState.getPushedPlayers().add(player));
+
+        }
+
     }
 
 }
