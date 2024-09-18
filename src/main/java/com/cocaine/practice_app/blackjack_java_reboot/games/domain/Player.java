@@ -9,7 +9,9 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
-final class Player {
+public final class Player {
+
+    private final Integer id;
 
     private final String name;
     private final String email;
@@ -22,7 +24,7 @@ final class Player {
     private Collection<Card> hand;
 
     public Player(String name, String email) {
-        this(name, email, false, PlayerState.PLAYING, new ArrayList<>());
+        this(null, name, email, false, PlayerState.PLAYING, new ArrayList<>());
     }
 
     void setStartingHand(Collection<Card> startingHand) {
