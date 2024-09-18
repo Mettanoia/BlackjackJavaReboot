@@ -13,6 +13,6 @@ public final class GameEntity {
 
     @Id
     @Getter
-    private final Long Id;
+    private final Integer Id;
 
 }
