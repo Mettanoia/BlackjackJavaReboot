@@ -20,5 +20,6 @@ public final class GameState {
     private final Deque<Card> deck;
     private final ArrayList<Player> players;
     private ArrayList<Player> winners = new ArrayList<>();
+    private ArrayList<Player> pushedPlayers = new ArrayList<>();
 
 }
